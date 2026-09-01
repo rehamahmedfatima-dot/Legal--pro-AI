@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Header } from "@/components/public/Header";
 
 export const metadata: Metadata = {
   title: "LegalPro AI — Smart Legal Solutions. Trusted Professional Service.",
@@ -11,6 +12,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ar" dir="rtl">
       <body className="bg-bg-light font-sans text-navy antialiased dark:bg-bg-dark dark:text-white">
+        <Header />
         {children}
       </body>
     </html>
