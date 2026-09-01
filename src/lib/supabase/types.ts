@@ -1,12 +1,15 @@
 /**
  * Hand-authored subset of the generated Supabase types, matching
- * supabase/migrations/0001_init.sql. Regenerate with:
+ * supabase/migrations/0001_init.sql and 0002_phase2_ai_tools.sql.
+ * Regenerate with:
  *   supabase gen types typescript --project-id <id> > src/lib/supabase/types.ts
  * once the project is linked, and this file becomes obsolete.
  */
 export type UserRole = "admin" | "lawyer" | "client";
 export type CaseStatus = "open" | "in_progress" | "pending_court" | "closed" | "appealed";
 export type CasePriority = "low" | "medium" | "high" | "urgent";
+export type AppointmentStatus = "pending" | "confirmed" | "completed" | "cancelled" | "rescheduled";
+export type ConsultationType = "in_person" | "video" | "phone";
 
 export interface Database {
   public: {
@@ -33,6 +36,7 @@ export interface Database {
           locale?: string;
         };
         Update: Partial<Database["public"]["Tables"]["profiles"]["Insert"]>;
+        Relationships: [];
       };
       cases: {
         Row: {
@@ -66,6 +70,7 @@ export interface Database {
           summary?: string | null;
         };
         Update: Partial<Database["public"]["Tables"]["cases"]["Insert"]>;
+        Relationships: [];
       };
       case_timeline_events: {
         Row: {
@@ -87,6 +92,32 @@ export interface Database {
           created_by: string;
         };
         Update: Partial<Database["public"]["Tables"]["case_timeline_events"]["Insert"]>;
+        Relationships: [];
+      };
+      appointments: {
+        Row: {
+          id: string;
+          client_id: string;
+          lawyer_id: string;
+          consultation_type: ConsultationType;
+          scheduled_at: string;
+          duration_minutes: number;
+          status: AppointmentStatus;
+          issue_description: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          client_id: string;
+          lawyer_id: string;
+          consultation_type?: ConsultationType;
+          scheduled_at: string;
+          duration_minutes?: number;
+          status?: AppointmentStatus;
+          issue_description?: string | null;
+        };
+        Update: Partial<Database["public"]["Tables"]["appointments"]["Insert"]>;
+        Relationships: [];
       };
       contract_analyses: {
         Row: {
@@ -113,6 +144,7 @@ export interface Database {
           status?: "pending" | "completed" | "failed";
         };
         Update: Partial<Database["public"]["Tables"]["contract_analyses"]["Insert"]>;
+        Relationships: [];
       };
       generated_documents: {
         Row: {
@@ -137,7 +169,18 @@ export interface Database {
           language?: string;
         };
         Update: Partial<Database["public"]["Tables"]["generated_documents"]["Insert"]>;
+        Relationships: [];
       };
     };
+    Views: Record<string, never>;
+    Functions: Record<string, never>;
+    Enums: {
+      user_role: UserRole;
+      case_status: CaseStatus;
+      case_priority: CasePriority;
+      appointment_status: AppointmentStatus;
+      consultation_type: ConsultationType;
+    };
+    CompositeTypes: Record<string, never>;
   };
 }
