@@ -12,6 +12,9 @@ export type AppointmentStatus = "pending" | "confirmed" | "completed" | "cancell
 export type ConsultationType = "in_person" | "video" | "phone";
 
 export interface Database {
+  __InternalSupabase: {
+    PostgrestVersion: "12";
+  };
   public: {
     Tables: {
       profiles: {
