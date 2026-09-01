@@ -1,51 +1,49 @@
+import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
-import { updateSession } from "@/lib/supabase/middleware";
+import type { Database } from "./types";
 
-const roleHomePage: Record<string, string> = {
-  admin: "/admin/dashboard",
-  lawyer: "/lawyer/dashboard",
-  client: "/client/dashboard"
-};
+/**
+ * Refreshes the Supabase session on every request and exposes the
+ * authenticated user + role so route protection in middleware.ts can act on it.
+ */
+export async function updateSession(request: NextRequest) {
+  let response = NextResponse.next({ request: { headers: request.headers } });
 
-function requiredRoleForPath(pathname: string): string | null {
-  if (pathname.startsWith("/admin")) return "admin";
-  if (pathname.startsWith("/lawyer")) return "lawyer";
-  if (pathname.startsWith("/client")) return "client";
-  return null;
+  const supabase = createServerClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return request.cookies.get(name)?.value;
+        },
+        set(name: string, value: string, options: CookieOptions) {
+          request.cookies.set({ name, value, ...options });
+          response = NextResponse.next({ request: { headers: request.headers } });
+          response.cookies.set({ name, value, ...options });
+        },
+        remove(name: string, options: CookieOptions) {
+          request.cookies.set({ name, value: "", ...options });
+          response = NextResponse.next({ request: { headers: request.headers } });
+          response.cookies.set({ name, value: "", ...options });
+        }
+      }
+    }
+  );
+
+  const {
+    data: { user }
+  } = await supabase.auth.getUser();
+
+  let role: string | null = null;
+  if (user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single();
+    role = profile?.role ?? null;
+  }
+
+  return { response, user, role };
 }
-
-export async function middleware(request: NextRequest) {
-  const { response, user, role } = await updateSession(request);
-  const { pathname } = request.nextUrl;
-
-  const requiredRole = requiredRoleForPath(pathname);
-
-  // Protected area but no session -> send to login
-  if (requiredRole && !user) {
-    const loginUrl = new URL("/login", request.url);
-    loginUrl.searchParams.set("redirectTo", pathname);
-    return NextResponse.redirect(loginUrl);
-  }
-
-  // Protected area but wrong role -> send to their own dashboard
-  if (requiredRole && role && role !== requiredRole && role !== "admin") {
-    return NextResponse.redirect(new URL(roleHomePage[role] ?? "/", request.url));
-  }
-
-  // Already logged in and visiting /login or /register -> go to dashboard
-  if (user && role && (pathname === "/login" || pathname === "/register")) {
-    return NextResponse.redirect(new URL(roleHomePage[role] ?? "/", request.url));
-  }
-
-  return response;
-}
-
-export const config = {
-  matcher: [
-    "/admin/:path*",
-    "/lawyer/:path*",
-    "/client/:path*",
-    "/login",
-    "/register"
-  ]
-};
