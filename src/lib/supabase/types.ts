@@ -174,6 +174,55 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["generated_documents"]["Insert"]>;
         Relationships: [];
       };
+      case_ai_summaries: {
+        Row: {
+          id: string;
+          case_id: string;
+          created_by: string;
+          input_text: string | null;
+          facts: string[];
+          people: { name: string; role: string }[];
+          events: { date: string; description: string }[];
+          evidence: string[];
+          important_dates: { date: string; description: string }[];
+          legal_issues: string[];
+          strengths: string[];
+          weaknesses: string[];
+          missing_information: string[];
+          timeline: { date: string; description: string }[];
+          summary: string | null;
+          created_at: string;
+        };
+        Insert: {
+          case_id: string;
+          created_by: string;
+          input_text?: string | null;
+        };
+        Update: Partial<Database["public"]["Tables"]["case_ai_summaries"]["Insert"]>;
+        Relationships: [];
+      };
+      case_ai_strategies: {
+        Row: {
+          id: string;
+          case_id: string;
+          summary_id: string;
+          created_by: string;
+          chronological_timeline: { date: string; description: string }[];
+          open_questions: string[];
+          missing_documents: string[];
+          research_flags: string[];
+          discussion_topics: string[];
+          deadline_reminders: string[];
+          created_at: string;
+        };
+        Insert: {
+          case_id: string;
+          summary_id: string;
+          created_by: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["case_ai_strategies"]["Insert"]>;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
