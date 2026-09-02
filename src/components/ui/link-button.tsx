@@ -2,7 +2,7 @@ import Link, { type LinkProps } from "next/link";
 import type { AnchorHTMLAttributes } from "react";
 import { buttonClasses, type ButtonVariant } from "@/components/ui/button";
 
-interface LinkButtonProps extends LinkProps, AnchorHTMLAttributes<HTMLAnchorElement> {
+interface LinkButtonProps extends LinkProps, Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href"> {
   variant?: ButtonVariant;
 }
 
