@@ -1,6 +1,5 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { LinkButton } from "@/components/ui/link-button";
 
 const stats = [
   { label: "Cases Handled", value: "1,200+" },
@@ -30,14 +29,10 @@ export default function HomePage() {
           legal tools into a single premium platform.
         </p>
         <div className="mt-8 flex gap-4">
-          <Link href="/register">
-            <Button>Book a Consultation</Button>
-          </Link>
-          <Link href="/services">
-            <Button variant="ghost" className="border border-black/10 dark:border-white/10">
-              Our Services
-            </Button>
-          </Link>
+          <LinkButton href="/register">Book a Consultation</LinkButton>
+          <LinkButton href="/services" variant="ghost" className="border border-black/10 dark:border-white/10">
+            Our Services
+          </LinkButton>
         </div>
       </section>
 
