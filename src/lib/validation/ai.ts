@@ -32,3 +32,15 @@ export const generateDocumentSchema = z.object({
   caseId: z.string().uuid().optional()
 });
 export type GenerateDocumentInput = z.infer<typeof generateDocumentSchema>;
+
+export const caseSummarySchema = z.object({
+  caseId: z.string().uuid("Invalid case id"),
+  additionalText: z.string().max(8000, "Text is too long").optional()
+});
+export type CaseSummaryInput = z.infer<typeof caseSummarySchema>;
+
+export const legalStrategySchema = z.object({
+  caseId: z.string().uuid("Invalid case id"),
+  summaryId: z.string().uuid("Invalid summary id")
+});
+export type LegalStrategyInput = z.infer<typeof legalStrategySchema>;
