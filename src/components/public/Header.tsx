@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { SignOutButton } from "@/components/public/SignOutButton";
-import { Button } from "@/components/ui/button";
+import { LinkButton } from "@/components/ui/link-button";
 
 const roleHomePage: Record<string, string> = {
   admin: "/admin/dashboard",
@@ -45,21 +45,17 @@ export async function Header() {
         <div className="flex items-center gap-3">
           {user && role ? (
             <>
-              <Link href={roleHomePage[role] ?? "/"}>
-                <Button variant="secondary">Dashboard</Button>
-              </Link>
+              <LinkButton href={roleHomePage[role] ?? "/"} variant="secondary">
+                Dashboard
+              </LinkButton>
               <SignOutButton />
             </>
           ) : (
             <>
-              <Link href="/login">
-                <Button variant="ghost" className="border border-black/10 dark:border-white/10">
-                  Login
-                </Button>
-              </Link>
-              <Link href="/register">
-                <Button>Sign Up</Button>
-              </Link>
+              <LinkButton href="/login" variant="ghost" className="border border-black/10 dark:border-white/10">
+                Login
+              </LinkButton>
+              <LinkButton href="/register">Sign Up</LinkButton>
             </>
           )}
         </div>
