@@ -1,72 +1,27 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { LoginForm } from "@/components/auth/LoginForm";
 
-const stats = [
-  { label: "Cases Handled", value: "1,200+" },
-  { label: "Success Rate", value: "94%" },
-  { label: "Years of Experience", value: "15+" },
-  { label: "Clients Served", value: "3,000+" }
-];
+export const dynamic = "force-dynamic";
 
-const practiceAreas = [
-  "Civil Law",
-  "Criminal Law",
-  "Commercial Law",
-  "Family Law",
-  "Corporate Law",
-  "Real Estate Law"
-];
+export const metadata = { title: "Sign in — LegalPro AI" };
 
-export default function HomePage() {
+export default function LoginPage() {
   return (
-    <main>
-      <section className="mx-auto flex max-w-6xl flex-col items-center px-6 py-24 text-center">
-        <h1 className="max-w-3xl text-4xl font-bold leading-tight text-navy dark:text-white md:text-6xl">
-          Smart Legal Solutions. Trusted Professional Service.
+    <div className="flex min-h-screen items-center justify-center bg-bg-light px-4 dark:bg-bg-dark">
+      <div className="w-full max-w-md rounded-xl2 border border-black/5 bg-white/80 p-8 shadow-lg backdrop-blur-md dark:border-white/10 dark:bg-white/5">
+        <h1 className="mb-1 text-2xl font-semibold text-navy dark:text-white">
+          Welcome back
         </h1>
-        <p className="mt-6 max-w-xl text-lg text-black/60 dark:text-white/60">
-          LegalPro AI brings case management, client collaboration, and AI-powered
-          legal tools into a single premium platform.
+        <p className="mb-6 text-sm text-black/60 dark:text-white/60">
+          Sign in to your LegalPro AI account.
         </p>
-        <div className="mt-8 flex gap-4">
-          <Link href="/register">
-            <Button>Book a Consultation</Button>
-          </Link>
-          <Link href="/services">
-            <Button variant="ghost" className="border border-black/10 dark:border-white/10">
-              Our Services
-            </Button>
-          </Link>
-        </div>
-      </section>
-
-      <section className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-6 pb-24 md:grid-cols-4">
-        {stats.map((s) => (
-          <Card key={s.label} className="text-center">
-            <p className="text-3xl font-bold text-gold">{s.value}</p>
-            <p className="mt-1 text-sm text-black/60 dark:text-white/60">{s.label}</p>
-          </Card>
-        ))}
-      </section>
-
-      <section className="mx-auto max-w-6xl px-6 pb-24">
-        <h2 className="mb-8 text-center text-3xl font-semibold text-navy dark:text-white">
-          Practice Areas
-        </h2>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-          {practiceAreas.map((area) => (
-            <Card key={area}>
-              <CardHeader>
-                <CardTitle>{area}</CardTitle>
-              </CardHeader>
-              <p className="text-sm text-black/60 dark:text-white/60">
-                Professional consultation and representation.
-              </p>
-            </Card>
-          ))}
-        </div>
-      </section>
-    </main>
+        <LoginForm />
+        <p className="mt-6 text-center text-sm text-black/60 dark:text-white/60">
+          Don&apos;t have an account?{" "}
+          <a href="/register" className="text-gold underline">
+            Create one
+          </a>
+        </p>
+      </div>
+    </div>
   );
 }
