@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { notFound, redirect } from "next/navigation";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { CaseAiWorkspace } from "@/components/dashboard/CaseAiWorkspace";
 
 export const dynamic = "force-dynamic";
 
@@ -110,6 +111,13 @@ export default async function CaseDetailPage({ params }: { params: { id: string 
             </li>
           ))}
         </ol>
+      </section>
+
+      <section className="mt-10">
+        <h2 className="mb-4 text-lg font-semibold text-navy dark:text-white">
+          AI Case Analysis
+        </h2>
+        <CaseAiWorkspace caseId={caseData.id} />
       </section>
     </main>
   );
