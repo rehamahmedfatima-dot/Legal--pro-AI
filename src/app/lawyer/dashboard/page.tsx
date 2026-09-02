@@ -2,7 +2,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { LinkButton } from "@/components/ui/link-button";
 
 export const dynamic = "force-dynamic";
 
@@ -38,9 +38,7 @@ export default async function LawyerDashboardPage() {
         <h1 className="text-2xl font-semibold text-navy dark:text-white">
           Lawyer Dashboard
         </h1>
-        <Link href="/lawyer/cases/new">
-          <Button>+ New Case</Button>
-        </Link>
+        <LinkButton href="/lawyer/cases/new">+ New Case</LinkButton>
       </div>
 
       <section className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3">
@@ -122,4 +120,4 @@ export default async function LawyerDashboardPage() {
       </section>
     </main>
   );
-}
+                }
