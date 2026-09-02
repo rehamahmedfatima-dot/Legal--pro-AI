@@ -29,6 +29,8 @@ jobs:
           supabase functions deploy ai-legal-assistant --project-ref "$SUPABASE_PROJECT_REF"
           supabase functions deploy ai-contract-analyzer --project-ref "$SUPABASE_PROJECT_REF"
           supabase functions deploy ai-document-generator --project-ref "$SUPABASE_PROJECT_REF"
+          supabase functions deploy ai-case-summary --project-ref "$SUPABASE_PROJECT_REF"
+          supabase functions deploy ai-legal-strategy --project-ref "$SUPABASE_PROJECT_REF"
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
