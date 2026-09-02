@@ -1,6 +1,5 @@
-import Link from "next/link";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { LinkButton } from "@/components/ui/link-button";
 
 export const metadata = { title: "Services — LegalPro AI" };
 
@@ -103,9 +102,9 @@ export default function ServicesPage() {
               Estimated duration: {s.duration}
             </p>
 
-            <Link href="/register">
-              <Button className="mt-4 w-full">Book a Consultation</Button>
-            </Link>
+            <LinkButton href="/register" className="mt-4 w-full">
+              Book a Consultation
+            </LinkButton>
           </Card>
         ))}
       </div>
