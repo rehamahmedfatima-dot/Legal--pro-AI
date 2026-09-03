@@ -1,6 +1,63 @@
 import type { Locale } from "./locale";
 
-export const translations = {
+export interface NavDictionary {
+  home: string;
+  services: string;
+  login: string;
+  signUp: string;
+  dashboard: string;
+  signOut: string;
+}
+
+export interface HomeDictionary {
+  title: string;
+  subtitle: string;
+  bookConsultation: string;
+  ourServices: string;
+  statCasesHandled: string;
+  statSuccessRate: string;
+  statYearsExperience: string;
+  statClientsServed: string;
+  practiceAreasTitle: string;
+  practiceAreaDescription: string;
+}
+
+export interface ServicesDictionary {
+  title: string;
+  subtitle: string;
+  benefits: string;
+  process: string;
+  duration: string;
+  bookConsultation: string;
+}
+
+export interface AuthDictionary {
+  welcomeBack: string;
+  signInSubtitle: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  fullName: string;
+  signIn: string;
+  continueWithGoogle: string;
+  dontHaveAccount: string;
+  createOne: string;
+  createAccountTitle: string;
+  createAccountSubtitle: string;
+  createAccount: string;
+  alreadyHaveAccount: string;
+  signInLink: string;
+  checkInbox: string;
+}
+
+export interface Dictionary {
+  nav: NavDictionary;
+  home: HomeDictionary;
+  services: ServicesDictionary;
+  auth: AuthDictionary;
+}
+
+export const translations: Record<Locale, Dictionary> = {
   ar: {
     nav: {
       home: "الرئيسية",
@@ -103,8 +160,8 @@ export const translations = {
       checkInbox: "Check your inbox to confirm your email, then"
     }
   }
-} as const;
+};
 
-export function getDictionary(locale: Locale) {
+export function getDictionary(locale: Locale): Dictionary {
   return translations[locale];
 }
