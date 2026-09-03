@@ -8,8 +8,11 @@ import { loginSchema, type LoginInput } from "@/lib/validation/auth";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import type { translations } from "@/lib/i18n/translations";
 
-export function LoginForm() {
+type AuthDictionary = (typeof translations)["en"]["auth"];
+
+export function LoginForm({ t }: { t: AuthDictionary }) {
   const router = useRouter();
   const supabase = createClient();
   const [serverError, setServerError] = useState<string | null>(null);
@@ -68,7 +71,7 @@ export function LoginForm() {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>
         <label className="mb-1 block text-sm font-medium text-navy dark:text-white">
-          Email
+          {t.email}
         </label>
         <Input type="email" placeholder="you@example.com" {...register("email")} />
         {errors.email && (
@@ -78,7 +81,7 @@ export function LoginForm() {
 
       <div>
         <label className="mb-1 block text-sm font-medium text-navy dark:text-white">
-          Password
+          {t.password}
         </label>
         <Input type="password" placeholder="••••••••" {...register("password")} />
         {errors.password && (
@@ -89,7 +92,7 @@ export function LoginForm() {
       {serverError && <p className="text-sm text-red-600">{serverError}</p>}
 
       <Button type="submit" className="w-full" loading={isSubmitting}>
-        Sign in
+        {t.signIn}
       </Button>
 
       <Button
@@ -98,7 +101,7 @@ export function LoginForm() {
         className="w-full border border-black/10 dark:border-white/10"
         onClick={signInWithGoogle}
       >
-        Continue with Google
+        {t.continueWithGoogle}
       </Button>
     </form>
   );
