@@ -8,9 +8,7 @@ import { loginSchema, type LoginInput } from "@/lib/validation/auth";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import type { translations } from "@/lib/i18n/translations";
-
-type AuthDictionary = (typeof translations)["en"]["auth"];
+import type { AuthDictionary } from "@/lib/i18n/translations";
 
 export function LoginForm({ t }: { t: AuthDictionary }) {
   const router = useRouter();
