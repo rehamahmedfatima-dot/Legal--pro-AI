@@ -2,6 +2,9 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { SignOutButton } from "@/components/public/SignOutButton";
 import { LinkButton } from "@/components/ui/link-button";
+import { LanguageSwitcher } from "@/components/public/LanguageSwitcher";
+import { getLocale } from "@/lib/i18n/locale";
+import { getDictionary } from "@/lib/i18n/translations";
 
 const roleHomePage: Record<string, string> = {
   admin: "/admin/dashboard",
@@ -10,6 +13,8 @@ const roleHomePage: Record<string, string> = {
 };
 
 export async function Header() {
+  const locale = getLocale();
+  const t = getDictionary(locale);
   const supabase = createClient();
 
   const {
@@ -35,27 +40,29 @@ export async function Header() {
 
         <nav className="hidden items-center gap-6 text-sm text-black/70 dark:text-white/70 md:flex">
           <Link href="/" className="hover:text-gold">
-            Home
+            {t.nav.home}
           </Link>
           <Link href="/services" className="hover:text-gold">
-            Services
+            {t.nav.services}
           </Link>
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
+          <LanguageSwitcher locale={locale} />
+
           {user && role ? (
             <>
               <LinkButton href={roleHomePage[role] ?? "/"} variant="secondary">
-                Dashboard
+                {t.nav.dashboard}
               </LinkButton>
-              <SignOutButton />
+              <SignOutButton label={t.nav.signOut} />
             </>
           ) : (
             <>
               <LinkButton href="/login" variant="ghost" className="border border-black/10 dark:border-white/10">
-                Login
+                {t.nav.login}
               </LinkButton>
-              <LinkButton href="/register">Sign Up</LinkButton>
+              <LinkButton href="/register">{t.nav.signUp}</LinkButton>
             </>
           )}
         </div>
