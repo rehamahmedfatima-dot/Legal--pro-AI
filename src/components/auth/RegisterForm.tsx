@@ -1,16 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema, type RegisterInput } from "@/lib/validation/auth";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import type { translations } from "@/lib/i18n/translations";
 
-export function RegisterForm() {
-  const router = useRouter();
+type AuthDictionary = (typeof translations)["en"]["auth"];
+
+export function RegisterForm({ t }: { t: AuthDictionary }) {
   const supabase = createClient();
   const [serverError, setServerError] = useState<string | null>(null);
   const [confirmationSent, setConfirmationSent] = useState(false);
@@ -47,9 +48,9 @@ export function RegisterForm() {
   if (confirmationSent) {
     return (
       <p className="text-sm text-navy dark:text-white">
-        Check your inbox to confirm your email, then{" "}
+        {t.checkInbox}{" "}
         <a href="/login" className="text-gold underline">
-          sign in
+          {t.signInLink}
         </a>
         .
       </p>
@@ -60,7 +61,7 @@ export function RegisterForm() {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>
         <label className="mb-1 block text-sm font-medium text-navy dark:text-white">
-          Full name
+          {t.fullName}
         </label>
         <Input placeholder="John Doe" {...register("fullName")} />
         {errors.fullName && (
@@ -70,7 +71,7 @@ export function RegisterForm() {
 
       <div>
         <label className="mb-1 block text-sm font-medium text-navy dark:text-white">
-          Email
+          {t.email}
         </label>
         <Input type="email" placeholder="you@example.com" {...register("email")} />
         {errors.email && (
@@ -80,7 +81,7 @@ export function RegisterForm() {
 
       <div>
         <label className="mb-1 block text-sm font-medium text-navy dark:text-white">
-          Password
+          {t.password}
         </label>
         <Input type="password" placeholder="••••••••" {...register("password")} />
         {errors.password && (
@@ -90,7 +91,7 @@ export function RegisterForm() {
 
       <div>
         <label className="mb-1 block text-sm font-medium text-navy dark:text-white">
-          Confirm password
+          {t.confirmPassword}
         </label>
         <Input type="password" placeholder="••••••••" {...register("confirmPassword")} />
         {errors.confirmPassword && (
@@ -101,7 +102,7 @@ export function RegisterForm() {
       {serverError && <p className="text-sm text-red-600">{serverError}</p>}
 
       <Button type="submit" className="w-full" loading={isSubmitting}>
-        Create account
+        {t.createAccount}
       </Button>
     </form>
   );
