@@ -50,11 +50,75 @@ export interface AuthDictionary {
   checkInbox: string;
 }
 
+/** Shared labels for case/appointment status values stored in the database. */
+export interface StatusDictionary {
+  open: string;
+  in_progress: string;
+  pending_court: string;
+  closed: string;
+  appealed: string;
+  pending: string;
+  confirmed: string;
+  completed: string;
+  cancelled: string;
+  rescheduled: string;
+  in_person: string;
+  video: string;
+  phone: string;
+}
+
+/** Shared labels for the four case priority values. */
+export interface PriorityDictionary {
+  low: string;
+  medium: string;
+  high: string;
+  urgent: string;
+}
+
+export interface ClientDashboardDictionary {
+  welcomeBack: string;
+  subtitle: string;
+  yourCases: string;
+  noCases: string;
+  priority: string;
+  upcomingAppointments: string;
+  noAppointments: string;
+  aiAssistantTitle: string;
+}
+
+export interface LawyerDashboardDictionary {
+  title: string;
+  newCase: string;
+  openCases: string;
+  activeClients: string;
+  recentCases: string;
+  aiToolsTitle: string;
+  contractAnalyzerTitle: string;
+  contractAnalyzerDesc: string;
+  documentGeneratorTitle: string;
+  documentGeneratorDesc: string;
+  recentCasesTitle: string;
+  noCasesYet: string;
+}
+
+export interface AiAssistantDictionary {
+  title: string;
+  disclaimer: string;
+  thinking: string;
+  placeholder: string;
+  send: string;
+}
+
 export interface Dictionary {
   nav: NavDictionary;
   home: HomeDictionary;
   services: ServicesDictionary;
   auth: AuthDictionary;
+  status: StatusDictionary;
+  priority: PriorityDictionary;
+  clientDashboard: ClientDashboardDictionary;
+  lawyerDashboard: LawyerDashboardDictionary;
+  aiAssistant: AiAssistantDictionary;
 }
 
 export const translations: Record<Locale, Dictionary> = {
@@ -107,6 +171,60 @@ export const translations: Record<Locale, Dictionary> = {
       alreadyHaveAccount: "لديك حساب بالفعل؟",
       signInLink: "سجّل الدخول",
       checkInbox: "تحقق من بريدك الإلكتروني لتأكيد الحساب، ثم"
+    },
+    status: {
+      open: "مفتوحة",
+      in_progress: "جارٍ العمل عليها",
+      pending_court: "بانتظار المحكمة",
+      closed: "مغلقة",
+      appealed: "مستأنفة",
+      pending: "قيد الانتظار",
+      confirmed: "مؤكد",
+      completed: "مكتمل",
+      cancelled: "ملغى",
+      rescheduled: "تمت إعادة الجدولة",
+      in_person: "حضوري",
+      video: "عبر الفيديو",
+      phone: "عبر الهاتف"
+    },
+    priority: {
+      low: "منخفضة",
+      medium: "متوسطة",
+      high: "عالية",
+      urgent: "عاجلة"
+    },
+    clientDashboard: {
+      welcomeBack: "أهلًا بعودتك",
+      subtitle: "إليك نظرة عامة على قضاياك ومواعيدك القادمة.",
+      yourCases: "قضاياك",
+      noCases: "لا توجد لديك قضايا نشطة بعد.",
+      priority: "الأولوية",
+      upcomingAppointments: "المواعيد القادمة",
+      noAppointments: "لا توجد مواعيد قادمة.",
+      aiAssistantTitle: "المساعد القانوني الذكي"
+    },
+    lawyerDashboard: {
+      title: "لوحة تحكم المحامي",
+      newCase: "+ قضية جديدة",
+      openCases: "قضايا مفتوحة",
+      activeClients: "عملاء نشطون",
+      recentCases: "قضايا حديثة",
+      aiToolsTitle: "أدوات الذكاء الاصطناعي",
+      contractAnalyzerTitle: "محلل العقود بالذكاء الاصطناعي",
+      contractAnalyzerDesc:
+        "ارفع عقدًا للحصول على تحليل للمخاطر والالتزامات والحقوق والبنود الناقصة.",
+      documentGeneratorTitle: "مولّد المستندات بالذكاء الاصطناعي",
+      documentGeneratorDesc:
+        "ولّد مسودة قابلة للتعديل لعقد أو إنذار أو توكيل أو مستند قانوني آخر من فورم بسيط.",
+      recentCasesTitle: "القضايا الحديثة",
+      noCasesYet: "لا توجد قضايا بعد — أنشئ أول قضية."
+    },
+    aiAssistant: {
+      title: "المساعد القانوني الذكي",
+      disclaimer: "هذا المساعد لا يغني عن الاستشارة القانونية المتخصصة.",
+      thinking: "جارٍ التفكير…",
+      placeholder: "اسأل سؤالًا قانونيًا عامًا…",
+      send: "إرسال"
     }
   },
   en: {
@@ -158,10 +276,64 @@ export const translations: Record<Locale, Dictionary> = {
       alreadyHaveAccount: "Already have an account?",
       signInLink: "Sign in",
       checkInbox: "Check your inbox to confirm your email, then"
+    },
+    status: {
+      open: "Open",
+      in_progress: "In Progress",
+      pending_court: "Pending Court",
+      closed: "Closed",
+      appealed: "Appealed",
+      pending: "Pending",
+      confirmed: "Confirmed",
+      completed: "Completed",
+      cancelled: "Cancelled",
+      rescheduled: "Rescheduled",
+      in_person: "In Person",
+      video: "Video",
+      phone: "Phone"
+    },
+    priority: {
+      low: "Low",
+      medium: "Medium",
+      high: "High",
+      urgent: "Urgent"
+    },
+    clientDashboard: {
+      welcomeBack: "Welcome back",
+      subtitle: "Here is an overview of your cases and upcoming appointments.",
+      yourCases: "Your Cases",
+      noCases: "You have no active cases yet.",
+      priority: "Priority",
+      upcomingAppointments: "Upcoming Appointments",
+      noAppointments: "No upcoming appointments.",
+      aiAssistantTitle: "AI Legal Assistant"
+    },
+    lawyerDashboard: {
+      title: "Lawyer Dashboard",
+      newCase: "+ New Case",
+      openCases: "Open Cases",
+      activeClients: "Active Clients",
+      recentCases: "Recent Cases",
+      aiToolsTitle: "AI Tools",
+      contractAnalyzerTitle: "AI Contract Analyzer",
+      contractAnalyzerDesc:
+        "Upload a contract to get clause risks, obligations, rights, and missing-clause recommendations.",
+      documentGeneratorTitle: "AI Document Generator",
+      documentGeneratorDesc:
+        "Generate an editable draft contract, notice, POA, or other legal document from a short form.",
+      recentCasesTitle: "Recent Cases",
+      noCasesYet: "No cases yet — create your first one."
+    },
+    aiAssistant: {
+      title: "AI Legal Assistant",
+      disclaimer: "This AI does not replace professional legal advice.",
+      thinking: "Thinking…",
+      placeholder: "Ask a general legal question…",
+      send: "Send"
     }
   }
 };
 
 export function getDictionary(locale: Locale): Dictionary {
   return translations[locale];
-}
+    }
