@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import type { AiAssistantDictionary } from "@/lib/i18n/translations";
 
 interface ChatMessage {
   role: "user" | "assistant";
   text: string;
 }
 
-export function AiAssistantWidget() {
+export function AiAssistantWidget({ t }: { t: AiAssistantDictionary }) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -47,10 +48,8 @@ export function AiAssistantWidget() {
   return (
     <div className="flex h-[520px] w-full max-w-xl flex-col rounded-xl2 border border-black/5 bg-white/80 shadow-lg backdrop-blur-md dark:border-white/10 dark:bg-white/5">
       <div className="border-b border-black/5 p-4 dark:border-white/10">
-        <h3 className="font-semibold text-navy dark:text-white">AI Legal Assistant</h3>
-        <p className="text-xs text-black/50 dark:text-white/50">
-          This AI does not replace professional legal advice.
-        </p>
+        <h3 className="font-semibold text-navy dark:text-white">{t.title}</h3>
+        <p className="text-xs text-black/50 dark:text-white/50">{t.disclaimer}</p>
       </div>
 
       <div className="flex-1 space-y-3 overflow-y-auto p-4">
@@ -68,7 +67,7 @@ export function AiAssistantWidget() {
         ))}
         {loading && (
           <div className="me-auto max-w-[85%] rounded-xl2 bg-black/5 px-4 py-2 text-sm text-black/50 dark:bg-white/10 dark:text-white/50">
-            Thinking…
+            {t.thinking}
           </div>
         )}
         {error && <p className="text-sm text-red-600">{error}</p>}
@@ -79,11 +78,11 @@ export function AiAssistantWidget() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && !loading && ask()}
-          placeholder="Ask a general legal question…"
+          placeholder={t.placeholder}
           className="flex-1 rounded-lg border border-black/10 bg-white px-3.5 py-2.5 text-sm dark:border-white/10 dark:bg-bg-dark"
         />
         <Button onClick={ask} loading={loading}>
-          Send
+          {t.send}
         </Button>
       </div>
     </div>
