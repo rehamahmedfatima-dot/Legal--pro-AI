@@ -2,22 +2,14 @@ import { createClient } from "@/lib/supabase/server";
 import { notFound, redirect } from "next/navigation";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { CaseAiWorkspace } from "@/components/dashboard/CaseAiWorkspace";
+import { getLocale } from "@/lib/i18n/locale";
+import { getDictionary } from "@/lib/i18n/translations";
 
 export const dynamic = "force-dynamic";
 
-const eventTypeLabels: Record<string, string> = {
-  created: "Case Created",
-  document_added: "Document Added",
-  court_session: "Court Session",
-  deadline: "Deadline",
-  evidence_added: "Evidence Added",
-  note: "Note",
-  decision: "Court Decision",
-  appeal: "Appeal Filed",
-  result: "Final Result"
-};
-
 export default async function CaseDetailPage({ params }: { params: { id: string } }) {
+  const locale = getLocale();
+  const t = getDictionary(locale);
   const supabase = createClient();
 
   const {
@@ -52,29 +44,29 @@ export default async function CaseDetailPage({ params }: { params: { id: string 
             {caseData.title}
           </h1>
           <p className="text-sm text-black/60 dark:text-white/60">
-            Case #{caseData.case_number} · {caseData.category}
+            #{caseData.case_number} · {caseData.category}
           </p>
         </div>
         <span className="rounded-full bg-navy/5 px-3 py-1 text-xs font-medium text-navy dark:bg-white/10 dark:text-white">
-          {caseData.status.replace("_", " ")}
+          {t.status[caseData.status]}
         </span>
       </div>
 
       <div className="mt-6 grid gap-4 md:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Client</CardTitle>
+            <CardTitle>{t.caseDetail.client}</CardTitle>
           </CardHeader>
           <p className="text-sm">{client?.full_name}</p>
           <p className="text-sm text-black/60 dark:text-white/60">{client?.email}</p>
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Court Details</CardTitle>
+            <CardTitle>{t.caseDetail.courtDetails}</CardTitle>
           </CardHeader>
-          <p className="text-sm">{caseData.court_name || "Not assigned yet"}</p>
+          <p className="text-sm">{caseData.court_name || t.caseDetail.notAssigned}</p>
           <p className="text-sm text-black/60 dark:text-white/60">
-            Judge: {caseData.judge_name || "—"}
+            {t.caseDetail.judge}: {caseData.judge_name || "—"}
           </p>
         </Card>
       </div>
@@ -82,7 +74,7 @@ export default async function CaseDetailPage({ params }: { params: { id: string 
       {caseData.summary && (
         <Card className="mt-6">
           <CardHeader>
-            <CardTitle>Summary</CardTitle>
+            <CardTitle>{t.caseDetail.summary}</CardTitle>
           </CardHeader>
           <p className="text-sm text-black/70 dark:text-white/70">{caseData.summary}</p>
         </Card>
@@ -90,14 +82,14 @@ export default async function CaseDetailPage({ params }: { params: { id: string 
 
       <section className="mt-10">
         <h2 className="mb-4 text-lg font-semibold text-navy dark:text-white">
-          Case Timeline
+          {t.caseDetail.timeline}
         </h2>
         <ol className="relative ms-3 space-y-6 border-s-2 border-gold/30 ps-6">
           {(timeline ?? []).map((event) => (
             <li key={event.id} className="relative">
               <span className="absolute -start-[1.95rem] top-1 h-3 w-3 rounded-full bg-gold" />
               <p className="text-xs font-medium uppercase tracking-wide text-gold">
-                {eventTypeLabels[event.event_type] ?? event.event_type}
+                {t.eventType[event.event_type as keyof typeof t.eventType] ?? event.event_type}
               </p>
               <p className="font-medium text-navy dark:text-white">{event.title}</p>
               {event.description && (
@@ -106,7 +98,7 @@ export default async function CaseDetailPage({ params }: { params: { id: string 
                 </p>
               )}
               <p className="mt-1 text-xs text-black/40 dark:text-white/40">
-                {new Date(event.event_date).toLocaleString()}
+                {new Date(event.event_date).toLocaleString(locale === "ar" ? "ar-EG" : "en-US")}
               </p>
             </li>
           ))}
@@ -115,9 +107,9 @@ export default async function CaseDetailPage({ params }: { params: { id: string 
 
       <section className="mt-10">
         <h2 className="mb-4 text-lg font-semibold text-navy dark:text-white">
-          AI Case Analysis
+          {t.caseDetail.aiCaseAnalysis}
         </h2>
-        <CaseAiWorkspace caseId={caseData.id} />
+        <CaseAiWorkspace caseId={caseData.id} t={t.caseAiWorkspace} />
       </section>
     </main>
   );
