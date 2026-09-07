@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import type { CaseAiWorkspaceDictionary } from "@/lib/i18n/translations";
 
 interface SummaryResult {
   facts: string[];
@@ -27,9 +28,9 @@ interface StrategyResult {
   deadline_reminders: string[];
 }
 
-function Bullets({ items }: { items: string[] }) {
+function Bullets({ items, noneLabel }: { items: string[]; noneLabel: string }) {
   if (!items || items.length === 0) {
-    return <p className="text-sm text-black/50 dark:text-white/50">None identified.</p>;
+    return <p className="text-sm text-black/50 dark:text-white/50">{noneLabel}</p>;
   }
   return (
     <ul className="list-inside list-disc text-sm text-black/70 dark:text-white/70">
@@ -40,7 +41,13 @@ function Bullets({ items }: { items: string[] }) {
   );
 }
 
-export function CaseAiWorkspace({ caseId }: { caseId: string }) {
+export function CaseAiWorkspace({
+  caseId,
+  t
+}: {
+  caseId: string;
+  t: CaseAiWorkspaceDictionary;
+}) {
   const [additionalText, setAdditionalText] = useState("");
   const [summaryId, setSummaryId] = useState<string | null>(null);
   const [summary, setSummary] = useState<SummaryResult | null>(null);
@@ -100,21 +107,18 @@ export function CaseAiWorkspace({ caseId }: { caseId: string }) {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>AI Case Summary</CardTitle>
+          <CardTitle>{t.summaryCardTitle}</CardTitle>
         </CardHeader>
-        <p className="mb-3 text-sm text-black/60 dark:text-white/60">
-          Uses this case&apos;s existing summary and timeline. Optionally add extra
-          notes below before generating.
-        </p>
+        <p className="mb-3 text-sm text-black/60 dark:text-white/60">{t.summaryCardDesc}</p>
         <textarea
           value={additionalText}
           onChange={(e) => setAdditionalText(e.target.value)}
           rows={4}
-          placeholder="Paste additional case notes or documents text (optional)…"
+          placeholder={t.additionalTextPlaceholder}
           className="w-full rounded-lg border border-black/10 bg-white px-3.5 py-2.5 text-sm dark:border-white/10 dark:bg-bg-dark"
         />
         <Button onClick={generateSummary} loading={loadingSummary} className="mt-3">
-          Generate AI Summary
+          {t.generateSummaryButton}
         </Button>
         {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
       </Card>
@@ -123,7 +127,7 @@ export function CaseAiWorkspace({ caseId }: { caseId: string }) {
         <div className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Summary</CardTitle>
+              <CardTitle>{t.summaryTitle}</CardTitle>
             </CardHeader>
             <p className="text-sm text-black/70 dark:text-white/70">{summary.summary}</p>
           </Card>
@@ -131,45 +135,45 @@ export function CaseAiWorkspace({ caseId }: { caseId: string }) {
           <div className="grid gap-4 md:grid-cols-2">
             <Card>
               <CardHeader>
-                <CardTitle>Facts</CardTitle>
+                <CardTitle>{t.factsTitle}</CardTitle>
               </CardHeader>
-              <Bullets items={summary.facts} />
+              <Bullets items={summary.facts} noneLabel={t.noneIdentified} />
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>Legal Issues</CardTitle>
+                <CardTitle>{t.legalIssuesTitle}</CardTitle>
               </CardHeader>
-              <Bullets items={summary.legal_issues} />
+              <Bullets items={summary.legal_issues} noneLabel={t.noneIdentified} />
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>Strengths</CardTitle>
+                <CardTitle>{t.strengthsTitle}</CardTitle>
               </CardHeader>
-              <Bullets items={summary.strengths} />
+              <Bullets items={summary.strengths} noneLabel={t.noneIdentified} />
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>Weaknesses</CardTitle>
+                <CardTitle>{t.weaknessesTitle}</CardTitle>
               </CardHeader>
-              <Bullets items={summary.weaknesses} />
+              <Bullets items={summary.weaknesses} noneLabel={t.noneIdentified} />
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>Missing Information</CardTitle>
+                <CardTitle>{t.missingInfoTitle}</CardTitle>
               </CardHeader>
-              <Bullets items={summary.missing_information} />
+              <Bullets items={summary.missing_information} noneLabel={t.noneIdentified} />
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>Evidence</CardTitle>
+                <CardTitle>{t.evidenceTitle}</CardTitle>
               </CardHeader>
-              <Bullets items={summary.evidence} />
+              <Bullets items={summary.evidence} noneLabel={t.noneIdentified} />
             </Card>
           </div>
 
           <Card>
             <CardHeader>
-              <CardTitle>People Involved</CardTitle>
+              <CardTitle>{t.peopleTitle}</CardTitle>
             </CardHeader>
             <ul className="space-y-1 text-sm">
               {summary.people.map((p, i) => (
@@ -178,54 +182,51 @@ export function CaseAiWorkspace({ caseId }: { caseId: string }) {
                 </li>
               ))}
               {summary.people.length === 0 && (
-                <p className="text-black/50 dark:text-white/50">None identified.</p>
+                <p className="text-black/50 dark:text-white/50">{t.noneIdentified}</p>
               )}
             </ul>
           </Card>
 
           <Card>
             <CardHeader>
-              <CardTitle>AI Legal Strategy — Organizational Suggestions</CardTitle>
+              <CardTitle>{t.strategyCardTitle}</CardTitle>
             </CardHeader>
-            <p className="mb-3 text-sm font-medium text-gold">
-              These are organizational suggestions only — not legal advice or
-              litigation strategy.
-            </p>
+            <p className="mb-3 text-sm font-medium text-gold">{t.strategyDisclaimer}</p>
             {!strategy ? (
               <Button onClick={generateStrategy} loading={loadingStrategy}>
-                Generate Strategy Notes
+                {t.generateStrategyButton}
               </Button>
             ) : (
               <div className="space-y-4">
                 <div>
                   <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-black/50 dark:text-white/50">
-                    Open Questions
+                    {t.openQuestionsTitle}
                   </p>
-                  <Bullets items={strategy.open_questions} />
+                  <Bullets items={strategy.open_questions} noneLabel={t.noneIdentified} />
                 </div>
                 <div>
                   <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-black/50 dark:text-white/50">
-                    Missing Documents
+                    {t.missingDocumentsTitle}
                   </p>
-                  <Bullets items={strategy.missing_documents} />
+                  <Bullets items={strategy.missing_documents} noneLabel={t.noneIdentified} />
                 </div>
                 <div>
                   <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-black/50 dark:text-white/50">
-                    Areas for Further Research
+                    {t.researchFlagsTitle}
                   </p>
-                  <Bullets items={strategy.research_flags} />
+                  <Bullets items={strategy.research_flags} noneLabel={t.noneIdentified} />
                 </div>
                 <div>
                   <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-black/50 dark:text-white/50">
-                    Topics to Discuss with Client
+                    {t.discussionTopicsTitle}
                   </p>
-                  <Bullets items={strategy.discussion_topics} />
+                  <Bullets items={strategy.discussion_topics} noneLabel={t.noneIdentified} />
                 </div>
                 <div>
                   <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-black/50 dark:text-white/50">
-                    Procedural Deadline Reminders
+                    {t.deadlineRemindersTitle}
                   </p>
-                  <Bullets items={strategy.deadline_reminders} />
+                  <Bullets items={strategy.deadline_reminders} noneLabel={t.noneIdentified} />
                 </div>
               </div>
             )}
@@ -234,4 +235,4 @@ export function CaseAiWorkspace({ caseId }: { caseId: string }) {
       )}
     </div>
   );
-                                  }
+}
