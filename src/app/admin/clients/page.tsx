@@ -1,10 +1,14 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { Card } from "@/components/ui/card";
+import { getLocale } from "@/lib/i18n/locale";
+import { getDictionary } from "@/lib/i18n/translations";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminClientsPage() {
+  const locale = getLocale();
+  const t = getDictionary(locale);
   const supabase = createClient();
 
   const {
@@ -25,8 +29,6 @@ export default async function AdminClientsPage() {
     .eq("role", "client")
     .order("created_at", { ascending: false });
 
-  // Case counts per client, fetched separately since Supabase's basic
-  // client doesn't do cross-table aggregate counts in one query here.
   const { data: caseCounts } = await supabase.from("cases").select("client_id");
   const countByClient = new Map<string, number>();
   for (const row of caseCounts ?? []) {
@@ -36,7 +38,7 @@ export default async function AdminClientsPage() {
   return (
     <main className="mx-auto max-w-4xl px-6 py-10">
       <h1 className="mb-6 text-2xl font-semibold text-navy dark:text-white">
-        Clients ({clients?.length ?? 0})
+        {t.adminClients.title} ({clients?.length ?? 0})
       </h1>
 
       {clients && clients.length > 0 ? (
@@ -49,10 +51,11 @@ export default async function AdminClientsPage() {
               </div>
               <div className="text-right">
                 <p className="text-sm font-medium text-navy dark:text-white">
-                  {countByClient.get(c.id) ?? 0} case(s)
+                  {countByClient.get(c.id) ?? 0} {t.adminClients.casesCount}
                 </p>
                 <p className="text-xs text-black/40 dark:text-white/40">
-                  Joined {new Date(c.created_at).toLocaleDateString()}
+                  {t.adminClients.joined}{" "}
+                  {new Date(c.created_at).toLocaleDateString(locale === "ar" ? "ar-EG" : "en-US")}
                 </p>
               </div>
             </Card>
@@ -60,7 +63,9 @@ export default async function AdminClientsPage() {
         </div>
       ) : (
         <Card>
-          <p className="text-sm text-black/60 dark:text-white/60">No clients yet.</p>
+          <p className="text-sm text-black/60 dark:text-white/60">
+            {t.adminClients.noClientsYet}
+          </p>
         </Card>
       )}
     </main>
