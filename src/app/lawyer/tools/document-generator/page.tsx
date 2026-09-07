@@ -2,10 +2,14 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { DocumentGeneratorForm } from "@/components/dashboard/DocumentGeneratorForm";
 import { Card } from "@/components/ui/card";
+import { getLocale } from "@/lib/i18n/locale";
+import { getDictionary } from "@/lib/i18n/translations";
 
 export const dynamic = "force-dynamic";
 
 export default async function DocumentGeneratorPage() {
+  const locale = getLocale();
+  const t = getDictionary(locale);
   const supabase = createClient();
 
   const {
@@ -33,23 +37,23 @@ export default async function DocumentGeneratorPage() {
   return (
     <main className="mx-auto max-w-4xl px-6 py-10">
       <h1 className="mb-6 text-2xl font-semibold text-navy dark:text-white">
-        AI Document Generator
+        {t.documentGenerator.pageTitle}
       </h1>
 
-      <DocumentGeneratorForm />
+      <DocumentGeneratorForm t={t.documentGenerator} />
 
       {pastDocs && pastDocs.length > 0 && (
         <section className="mt-10">
           <h2 className="mb-4 text-lg font-semibold text-navy dark:text-white">
-            Recently Generated
+            {t.documentGenerator.recentlyGenerated}
           </h2>
           <div className="space-y-2">
             {pastDocs.map((d) => (
               <Card key={d.id} className="flex items-center justify-between py-3">
                 <span className="text-sm">{d.title}</span>
                 <span className="text-xs text-black/50 dark:text-white/50">
-                  {d.document_type.replace("_", " ")} ·{" "}
-                  {new Date(d.created_at).toLocaleDateString()}
+                  {t.documentGenerator.types[d.document_type as keyof typeof t.documentGenerator.types] ?? d.document_type} ·{" "}
+                  {new Date(d.created_at).toLocaleDateString(locale === "ar" ? "ar-EG" : "en-US")}
                 </span>
               </Card>
             ))}
