@@ -4,6 +4,7 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import type { ContractAnalyzerDictionary } from "@/lib/i18n/translations";
 
 interface AnalysisResult {
   summary: string;
@@ -20,7 +21,7 @@ const severityColor: Record<string, string> = {
   low: "bg-emerald/10 text-emerald"
 };
 
-export function ContractAnalyzerUpload() {
+export function ContractAnalyzerUpload({ t }: { t: ContractAnalyzerDictionary }) {
   const supabase = createClient();
   const [file, setFile] = useState<File | null>(null);
   const [status, setStatus] = useState<"idle" | "uploading" | "analyzing" | "done" | "error">(
@@ -97,11 +98,9 @@ export function ContractAnalyzerUpload() {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Upload a Contract</CardTitle>
+          <CardTitle>{t.uploadTitle}</CardTitle>
         </CardHeader>
-        <p className="mb-4 text-sm text-black/60 dark:text-white/60">
-          PDF or DOCX, up to 15MB. This AI does not replace professional legal advice.
-        </p>
+        <p className="mb-4 text-sm text-black/60 dark:text-white/60">{t.uploadDesc}</p>
         <div className="flex items-center gap-3">
           <input
             type="file"
@@ -114,11 +113,7 @@ export function ContractAnalyzerUpload() {
             disabled={!file}
             loading={status === "uploading" || status === "analyzing"}
           >
-            {status === "uploading"
-              ? "Uploading…"
-              : status === "analyzing"
-                ? "Analyzing…"
-                : "Analyze Contract"}
+            {status === "uploading" ? t.uploading : status === "analyzing" ? t.analyzing : t.analyzeButton}
           </Button>
         </div>
         {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
@@ -128,14 +123,14 @@ export function ContractAnalyzerUpload() {
         <div className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Summary</CardTitle>
+              <CardTitle>{t.summaryTitle}</CardTitle>
             </CardHeader>
             <p className="text-sm text-black/70 dark:text-white/70">{result.summary}</p>
           </Card>
 
           <Card>
             <CardHeader>
-              <CardTitle>Risks</CardTitle>
+              <CardTitle>{t.risksTitle}</CardTitle>
             </CardHeader>
             <div className="space-y-2">
               {result.risks.map((r, i) => (
@@ -150,7 +145,7 @@ export function ContractAnalyzerUpload() {
                 </div>
               ))}
               {result.risks.length === 0 && (
-                <p className="text-sm text-black/50">No significant risks flagged.</p>
+                <p className="text-sm text-black/50">{t.noneIdentified}</p>
               )}
             </div>
           </Card>
@@ -158,7 +153,7 @@ export function ContractAnalyzerUpload() {
           <div className="grid gap-4 md:grid-cols-2">
             <Card>
               <CardHeader>
-                <CardTitle>Obligations</CardTitle>
+                <CardTitle>{t.obligationsTitle}</CardTitle>
               </CardHeader>
               <ul className="space-y-1 text-sm">
                 {result.obligations.map((o, i) => (
@@ -170,7 +165,7 @@ export function ContractAnalyzerUpload() {
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>Rights</CardTitle>
+                <CardTitle>{t.rightsTitle}</CardTitle>
               </CardHeader>
               <ul className="space-y-1 text-sm">
                 {result.rights.map((r, i) => (
@@ -184,7 +179,7 @@ export function ContractAnalyzerUpload() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Missing Clauses</CardTitle>
+              <CardTitle>{t.missingClausesTitle}</CardTitle>
             </CardHeader>
             <ul className="list-inside list-disc text-sm text-black/70 dark:text-white/70">
               {result.missing_clauses.map((m, i) => (
@@ -195,7 +190,7 @@ export function ContractAnalyzerUpload() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Recommendations</CardTitle>
+              <CardTitle>{t.recommendationsTitle}</CardTitle>
             </CardHeader>
             <ul className="list-inside list-disc text-sm text-black/70 dark:text-white/70">
               {result.recommendations.map((r, i) => (
@@ -207,4 +202,4 @@ export function ContractAnalyzerUpload() {
       )}
     </div>
   );
-          }
+}
