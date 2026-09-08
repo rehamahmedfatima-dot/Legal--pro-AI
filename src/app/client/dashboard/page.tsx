@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { AiAssistantWidget } from "@/components/dashboard/AiAssistantWidget";
 import { getLocale } from "@/lib/i18n/locale";
@@ -99,6 +100,19 @@ export default async function ClientDashboardPage() {
             </p>
           </Card>
         )}
+      </section>
+
+      <section className="mt-10">
+        <Link href="/client/messages">
+          <Card className="hover:border-gold/40">
+            <CardHeader>
+              <CardTitle>{t.messaging.dashboardCardTitle}</CardTitle>
+            </CardHeader>
+            <p className="text-sm text-black/60 dark:text-white/60">
+              {t.messaging.dashboardCardDesc}
+            </p>
+          </Card>
+        </Link>
       </section>
 
       <section className="mt-10">
