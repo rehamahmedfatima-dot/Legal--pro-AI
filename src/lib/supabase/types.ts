@@ -223,6 +223,26 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["case_ai_strategies"]["Insert"]>;
         Relationships: [];
       };
+      messages: {
+        Row: {
+          id: string;
+          sender_id: string;
+          receiver_id: string;
+          case_id: string | null;
+          body: string;
+          read_at: string | null;
+          created_at: string;
+        };
+        Insert: {
+          sender_id: string;
+          receiver_id: string;
+          case_id?: string | null;
+          body: string;
+          read_at?: string | null;
+        };
+        Update: Partial<Database["public"]["Tables"]["messages"]["Insert"]>;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
@@ -235,4 +255,4 @@ export interface Database {
     };
     CompositeTypes: Record<string, never>;
   };
-}
+  }
