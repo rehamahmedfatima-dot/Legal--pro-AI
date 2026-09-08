@@ -252,6 +252,17 @@ export interface CaseAiWorkspaceDictionary {
   deadlineRemindersTitle: string;
 }
 
+export interface MessagingDictionary {
+  title: string;
+  noContacts: string;
+  noMessagesYet: string;
+  typePlaceholder: string;
+  send: string;
+  unreadSuffix: string;
+  dashboardCardTitle: string;
+  dashboardCardDesc: string;
+}
+
 export interface Dictionary {
   nav: NavDictionary;
   home: HomeDictionary;
@@ -271,6 +282,7 @@ export interface Dictionary {
   contractAnalyzer: ContractAnalyzerDictionary;
   documentGenerator: DocumentGeneratorDictionary;
   caseAiWorkspace: CaseAiWorkspaceDictionary;
+  messaging: MessagingDictionary;
 }
 
 export const translations: Record<Locale, Dictionary> = {
@@ -511,6 +523,16 @@ export const translations: Record<Locale, Dictionary> = {
       researchFlagsTitle: "مجالات تحتاج بحثًا إضافيًا",
       discussionTopicsTitle: "مواضيع للمناقشة مع العميل",
       deadlineRemindersTitle: "تذكيرات بالمواعيد الإجرائية النهائية"
+    },
+    messaging: {
+      title: "الرسائل",
+      noContacts: "لا يوجد أشخاص متاحون للمراسلة بعد.",
+      noMessagesYet: "لا توجد رسائل بعد. ابدأ المحادثة.",
+      typePlaceholder: "اكتب رسالة…",
+      send: "إرسال",
+      unreadSuffix: "غير مقروءة",
+      dashboardCardTitle: "الرسائل",
+      dashboardCardDesc: "تواصل مباشرة مع محاميك/عملائك بخصوص القضايا الجارية."
     }
   },
   en: {
@@ -749,10 +771,20 @@ export const translations: Record<Locale, Dictionary> = {
       researchFlagsTitle: "Areas for Further Research",
       discussionTopicsTitle: "Topics to Discuss with Client",
       deadlineRemindersTitle: "Procedural Deadline Reminders"
+    },
+    messaging: {
+      title: "Messages",
+      noContacts: "No one available to message yet.",
+      noMessagesYet: "No messages yet. Start the conversation.",
+      typePlaceholder: "Type a message…",
+      send: "Send",
+      unreadSuffix: "unread",
+      dashboardCardTitle: "Messages",
+      dashboardCardDesc: "Message your lawyer/clients directly about ongoing cases."
     }
   }
 };
 
 export function getDictionary(locale: Locale): Dictionary {
   return translations[locale];
-      }
+  }
