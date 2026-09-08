@@ -97,6 +97,19 @@ export default async function LawyerDashboardPage() {
       </section>
 
       <section className="mt-10">
+        <Link href="/lawyer/messages">
+          <Card className="hover:border-gold/40">
+            <CardHeader>
+              <CardTitle>{t.messaging.dashboardCardTitle}</CardTitle>
+            </CardHeader>
+            <p className="text-sm text-black/60 dark:text-white/60">
+              {t.messaging.dashboardCardDesc}
+            </p>
+          </Card>
+        </Link>
+      </section>
+
+      <section className="mt-10">
         <h2 className="mb-4 text-lg font-semibold text-navy dark:text-white">
           {t.lawyerDashboard.recentCasesTitle}
         </h2>
